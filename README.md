@@ -8,16 +8,18 @@ This work represents the culmination of our learning and collaborative efforts a
 ---
 
 ## **Project Team**
-We are a group of final-year Computer Science Engineering students collaborating on this project:  
+We are a group of final-year Computer Science Engineering students collaborating on this project. Our names, roles, and responsibilities are listed below in order of registration number. 
 
-| **Name**            | **Registration Number** |
-|---------------------|-------------------------|
-| Md Abdullah         | 21105117011            |
-| Rupesh Kumar        | 21105117022            |
-| Md Asher            | 21105117055            |
-| Fariya Rafat        | 21105117057            |
+| Name                | Registration Number      | Roles & Responsibilities |
+|---------------------|--------------------------|--------------------------|
+| Md Abdullah         | 21105117011              |                          |
+| Rupesh Kumar        | 21105117022              |                          |
+| Md Asher            | 21105117055              |                          |
+| Fariya Rafat        | 21105117057              |                          |
 
-**Project Guide**: **Professor Sudhir Pandey**
+### Project Guide:
+Professor Sudhir Pandey, Loknayak Jai Prakash Institute of Technology, Chapra.
+
 
 ---
 
