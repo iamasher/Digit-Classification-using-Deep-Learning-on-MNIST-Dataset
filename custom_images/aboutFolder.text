@@ -1,0 +1,4 @@
+This folder contains images used for custom testing of the digit classification model. 
+These images are preprocessed to match the format expected by the model and are used for testing digit prediction.
+
+Files in this folder can be replaced or updated with new custom images for further testing.
