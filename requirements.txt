@@ -1,0 +1,4 @@
+tensorflow==2.11.0  # Deep learning framework
+numpy==1.23.5       # For numerical operations
+matplotlib==3.7.1   # For data visualization
+Pillow==9.5.0       # For image processing
