@@ -6,50 +6,42 @@ This file provides the current status and progress of the project **Digit Detect
 
 ## Current Status
 - **Phase**: Initial Planning and Research
-- **Last Updated**: 07-Dec-2024
-- **Completion Percentage**: 10%
+- **Last Updated**: 09-Dec-2024
+- **Completion Percentage**: 20%
 
 ---
 
 ## Completed Tasks
 - [x] Finalized the project topic and objectives.
 - [x] Assigned project roles and responsibilities (currently under discussion).
-- [x] Began writing the project synopsis/documentation.
+- [x] Completed writing the project synopsis/documentation.
+- [x] Started writing the initial code (imported necessary libraries in `main.py`).
 
 ---
 
 ## In-Progress Tasks
-- [ ] Preparing and finalizing the project synopsis.
 - [ ] Studying the requirements and tools:
   - TensorFlow and Keras for deep learning.
   - Image processing libraries like PIL and OpenCV.
   - Dataset structure and preprocessing for MNIST.
 - [ ] Setting up a collaborative environment using GitHub.
+- [ ] Preparing the project plan for coding phases.
 
 ---
 
 ## Upcoming Tasks
-- Complete the synopsis and seek approval from the guide.
 - Begin implementation with:
   - Data preprocessing and exploration of MNIST dataset.
   - Building the initial model structure.
 - Research additional datasets and augmentation techniques.
+- Add visualization features for project demonstrations.
 
 ---
 
 ## Notes
-- The project is currently in the research and planning stage.
-- Team members are familiarizing themselves with essential tools and technologies required for implementation.
-- Next milestone: Complete synopsis submission and start coding the dataset preprocessing.
+- The project has moved forward with basic coding initiation.
+- The synopsis is completed and ready for approval from the guide.
+- Team members are actively learning the tools and libraries needed for the next phases.
+- Next milestone: Finalize GitHub setup and begin dataset preprocessing.
 
----
-
-**Guided by**: Professor Sudhir Pandey, Dept. of CSE  
-**Team Members**:  
-- Md Abdullah  
-- Rupesh Kumar  
-- Md Asher  
-- Fariya Rafat  
-
-**Institute**: Loknayak Jai Prakash Institute of Technology, Chapra  
 
