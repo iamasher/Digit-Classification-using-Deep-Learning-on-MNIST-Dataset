@@ -13,9 +13,9 @@ We are a group of final-year Computer Science Engineering students collaborating
 | Name                | Registration Number      | Roles & Responsibilities |
 |---------------------|--------------------------|--------------------------|
 | Md Abdullah         | 21105117011              |                          |
-| Rupesh Kumar        | 21105117022              |                          |
-| Md Asher            | 21105117055              |                          |
-| Fariya Rafat        | 21105117057              |                          |
+| Rupesh Kumar        | 21105117023              |                          |
+| Md Asher            | 21105117055              |                       |
+| Fariya Rafat        | 21105117057              |                   |
 
 ### Project Guide:
 Professor Sudhir Pandey, Loknayak Jai Prakash Institute of Technology, Chapra.
