@@ -1,61 +1,97 @@
-import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout
-from tensorflow.keras.datasets import mnist
+import numpy as np
 import matplotlib.pyplot as plt
+import tensorflow as tf
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
+from sklearn.metrics import confusion_matrix, classification_report
+import seaborn as sns
+from kerastuner import HyperModel
+from kerastuner.tuners import RandomSearch
 
-# Load MNIST dataset
+# Load and preprocess the MNIST dataset
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
-
-# Normalize and reshape
 x_train, x_test = x_train / 255.0, x_test / 255.0
 x_train = x_train.reshape(-1, 28, 28, 1)
 x_test = x_test.reshape(-1, 28, 28, 1)
+y_train = to_categorical(y_train, 10)
+y_test = to_categorical(y_test, 10)
 
-# Build CNN model
-model = Sequential([
-    Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
-    MaxPooling2D((2, 2)),
-    Dropout(0.2),
-    Conv2D(64, (3, 3), activation='relu'),
-    MaxPooling2D((2, 2)),
-    Flatten(),
-    Dense(128, activation='relu'),
-    Dropout(0.5),
-    Dense(10, activation='softmax')
-])
+# Define data augmentation
+datagen = ImageDataGenerator(
+    rotation_range=10,
+    width_shift_range=0.1,
+    height_shift_range=0.1,
+    zoom_range=0.1
+)
+datagen.fit(x_train)
 
-# Compile model
-model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+# Define the hypermodel for Keras Tuner
+class CNNHyperModel(HyperModel):
+    def build(self, hp):
+        model = Sequential()
+        model.add(Conv2D(
+            filters=hp.Int('filters', min_value=32, max_value=128, step=32),
+            kernel_size=3,
+            activation='relu',
+            input_shape=(28, 28, 1)
+        ))
+        model.add(MaxPooling2D(pool_size=2))
+        model.add(Flatten())
+        model.add(Dense(
+            units=hp.Int('units', min_value=32, max_value=128, step=32),
+            activation='relu'
+        ))
+        model.add(Dense(10, activation='softmax'))
+        model.compile(
+            optimizer=tf.keras.optimizers.Adam(
+                hp.Choice('learning_rate', values=[1e-2, 1e-3, 1e-4])
+            ),
+            loss='categorical_crossentropy',
+            metrics=['accuracy']
+        )
+        return model
 
-# Train the model
-history = model.fit(x_train, y_train, epochs=6, validation_split=0.1, batch_size=64)
+# Initialize the Keras Tuner
+tuner = RandomSearch(
+    CNNHyperModel(),
+    objective='val_accuracy',
+    max_trials=2,
+    executions_per_trial=1,
+    directory='hyperparameter_tuning',
+    project_name='mnist_cnn'
+)
 
-# Save model in new format
-model.save('digit_detector_model.keras')
-print("Model saved as 'digit_detector_model.keras'.")
+# Perform hyperparameter tuning
+tuner.search(datagen.flow(x_train, y_train, batch_size=128),
+             epochs=10,
+             validation_data=(x_test, y_test))
 
-# Evaluate model
-test_loss, test_accuracy = model.evaluate(x_test, y_test)
-print(f"Test Accuracy: {test_accuracy:.2f}")
+# Retrieve the best model
+best_model = tuner.get_best_models(num_models=1)[0]
 
-# Plot Training Accuracy & Loss
-plt.figure(figsize=(12, 5))
+# Evaluate the best model on the test set
+test_loss, test_accuracy = best_model.evaluate(x_test, y_test)
+print(f'Test accuracy: {test_accuracy:.4f}')
 
-plt.subplot(1, 2, 1)
-plt.plot(history.history['accuracy'], label='Training Accuracy')
-plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
-plt.xlabel('Epochs')
-plt.ylabel('Accuracy')
-plt.legend()
-plt.title('Training and Validation Accuracy')
+# Generate predictions and compute the confusion matrix
+y_pred = best_model.predict(x_test)
+y_pred_classes = np.argmax(y_pred, axis=1)
+y_true = np.argmax(y_test, axis=1)
+cm = confusion_matrix(y_true, y_pred_classes)
 
-plt.subplot(1, 2, 2)
-plt.plot(history.history['loss'], label='Training Loss')
-plt.plot(history.history['val_loss'], label='Validation Loss')
-plt.xlabel('Epochs')
-plt.ylabel('Loss')
-plt.legend()
-plt.title('Training and Validation Loss')
-
+# Plot the confusion matrix
+plt.figure(figsize=(10, 8))
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=range(10), yticklabels=range(10))
+plt.xlabel('Predicted')
+plt.ylabel('True')
+plt.title('Confusion Matrix')
 plt.show()
+
+# Print classification report
+print(classification_report(y_true, y_pred_classes))
+
+# Save the best model
+best_model.save('mnist_cnn_best_model.keras')
